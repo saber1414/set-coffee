@@ -4,6 +4,7 @@ import Link from "next/link";
 import { IoIosArrowDown } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
 import { BsSuitHeart } from "react-icons/bs";
+import Image from "next/image";
 
 const Navbar = () => {
   return (

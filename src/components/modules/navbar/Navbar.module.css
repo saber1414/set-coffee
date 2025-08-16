@@ -133,3 +133,8 @@
 .dropdown:hover .dropdown_content {
   display: flex !important;
 }
+
+.image {
+  width: auto;
+  height: auto;
+}
