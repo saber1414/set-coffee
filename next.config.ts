@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         hostname: "set-coffee.com",
         pathname: "/wp-content/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "secure.gravatar.com",
+        pathname: "/avatar/**",
+      },
     ],
   },
 };

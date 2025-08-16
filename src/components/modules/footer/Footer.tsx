@@ -5,6 +5,7 @@ import { FaRegHeart } from "react-icons/fa";
 import Link from "next/link";
 import styles from "./Footer.module.css";
 import Article from "./Article";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -12,7 +13,12 @@ const Footer = () => {
       <footer className={styles.footer}>
         <main className="container">
           <section className={styles.descriptions}>
-            <img src="/images/logo_light.png" alt="" />
+            <Image
+              src="/images/logo_light.png"
+              width={171}
+              height={53}
+              alt="logo image"
+            />
             <p className={styles.descriptions_title}>
               شرکت فنجان داغ خوارزمی، فروشگاه اینترنتی قهوه ست
             </p>
@@ -85,10 +91,10 @@ const Footer = () => {
             </div>
           </ul>
           <div className={styles.licenses}>
-            <img src="/images/license4.htm" width={76} height={76} alt="" />
-            <img src="/images/license1.png" width={85} height={85} alt="" />
-            <img src="/images/license3.png" alt="" />
-            <img src="/images/license2.svg" width={62} height={95} alt="" />
+            <Image src="/images/license4.htm" width={76} height={76} alt="" />
+            <Image src="/images/license1.png" width={85} height={85} alt="" />
+            <Image src="/images/license3.png" width={88} height={69} alt="" />
+            <Image src="/images/license2.svg" width={62} height={95} alt="" />
           </div>
         </main>
         <hr />
