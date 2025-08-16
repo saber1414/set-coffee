@@ -3,15 +3,19 @@ import styles from "./Product.module.css";
 import { CiHeart, CiSearch } from "react-icons/ci";
 import Link from "next/link";
 import { FaRegStar, FaStar } from "react-icons/fa";
+import Image from "next/image";
 
 const Product = () => {
   return (
     <>
       <div className={styles.card}>
         <div className={styles.details_container}>
-          <img
+          <Image
             src="https://set-coffee.com/wp-content/uploads/2021/10/041-430x430.png"
-            alt=""
+            alt="Product Image"
+            width={430}
+            height={430}
+            priority
           />
           <div className={styles.icons}>
             <Link href="/">

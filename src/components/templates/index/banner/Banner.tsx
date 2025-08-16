@@ -6,6 +6,7 @@ import "swiper/css/navigation";
 
 import { Navigation, Autoplay } from "swiper/modules";
 import Link from "next/link";
+import Image from "next/image";
 
 const Banner: React.FC = () => {
   return (
@@ -19,25 +20,31 @@ const Banner: React.FC = () => {
       >
         <SwiperSlide>
           <Link href="/">
-            <img
+            <Image
               src="https://set-coffee.com/wp-content/uploads/2023/12/slide.jpg"
-              alt="slide img"
+              alt="banner logo"
+              width={1910}
+              height={816}
             />
           </Link>
         </SwiperSlide>
         <SwiperSlide>
           <Link href="/">
-            <img
+            <Image
               src="https://set-coffee.com/wp-content/uploads/2021/10/winter-slie.jpg"
-              alt="slide img"
+              alt="banner logo"
+              width={1910}
+              height={816}
             />
           </Link>
         </SwiperSlide>
         <SwiperSlide>
           <Link href="/">
-            <img
+            <Image
               src="https://set-coffee.com/wp-content/uploads/2022/06/fall.jpg"
-              alt="slide img"
+              alt="banner logo"
+              width={1910}
+              height={816}
             />
           </Link>
         </SwiperSlide>

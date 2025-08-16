@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import styles from "./Navbar.module.css";
 import Link from "next/link";
 import { IoIosArrowDown } from "react-icons/io";
@@ -7,13 +9,32 @@ import { BsSuitHeart } from "react-icons/bs";
 import Image from "next/image";
 
 const Navbar = () => {
+  const [fixTop, setFixTop] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fixNavbarToTop = () => {
+      const currentScroll = scrollY;
+      if (currentScroll > 130) setFixTop(true);
+      else setFixTop(false);
+    };
+
+    window.addEventListener("scroll", fixNavbarToTop);
+    return () => window.removeEventListener("scroll", fixNavbarToTop);
+  }, []);
+
   return (
     <>
-      <nav className={styles.navbar}>
+      <nav className={fixTop ? styles.navbar_fixed : styles.navbar}>
         <main>
           <div>
             <Link href="/">
-              <img src="/images/logo.png" alt="Logo" />
+              <Image
+                src="/images/logo.png"
+                alt="Logo"
+                width={171}
+                height={53}
+                priority
+              />
             </Link>
           </div>
           <ul className={styles.links}>
