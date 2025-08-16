@@ -14,7 +14,7 @@ const Banner: React.FC = () => {
         navigation={true}
         modules={[Navigation, Autoplay]}
         loop={true}
-        autoplay={{ delay: 5000 }}
+        autoplay={{ delay: 10000 }}
         className="mySwiper home-slider"
       >
         <SwiperSlide>
