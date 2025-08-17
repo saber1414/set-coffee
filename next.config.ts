@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         hostname: "secure.gravatar.com",
         pathname: "/avatar/**",
       },
+      {
+        protocol: "https",
+        hostname: "neurosciencenews.com",
+        pathname: "/files/**"
+      }
     ],
   },
 };
