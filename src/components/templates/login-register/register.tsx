@@ -1,12 +1,20 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import styles from "./register.module.css";
+import Sms from "./sms";
 
 type RegisterProps = {
   showLoginForm: () => void;
 };
 
 const Register = ({ showLoginForm }: RegisterProps) => {
-  return (
+  const [registerWithPass, setRegisterWithPass] = useState<boolean>(false);
+  const [registerWithOTP, setRegisterWithOTP] = useState<boolean>(false);
+
+  const hideLoginOTP = () => setRegisterWithOTP(false);
+
+  return !registerWithOTP ? (
     <>
       <div className={styles.form}>
         <input className={styles.input} type="text" placeholder="نام" />
@@ -20,17 +28,27 @@ const Register = ({ showLoginForm }: RegisterProps) => {
           type="email"
           placeholder="ایمیل (دلخواه)"
         />
-        {/* {registerWithPass && (
+        {registerWithPass && (
           <input
             className={styles.input}
             type="password"
             placeholder="رمز عبور"
           />
-        )} */}
-        <p style={{ marginTop: "1rem" }} className={styles.btn}>
-          ثبت نام با کد تایید
-        </p>
-        <button style={{ marginTop: ".7rem" }} className={styles.btn}>
+        )}
+        {!registerWithPass && (
+          <p
+            onClick={() => setRegisterWithOTP(true)}
+            style={{ marginTop: "1rem" }}
+            className={styles.btn}
+          >
+            ثبت نام با کد تایید
+          </p>
+        )}
+        <button
+          onClick={() => setRegisterWithPass(true)}
+          style={{ marginTop: ".7rem" }}
+          className={styles.btn}
+        >
           ثبت نام با رمزعبور
         </button>
         <p className={styles.back_to_login} onClick={showLoginForm}>
@@ -38,9 +56,9 @@ const Register = ({ showLoginForm }: RegisterProps) => {
         </p>
       </div>
       <p className={styles.redirect_to_home}>لغو</p>
-
-      {/* <Sms /> */}
     </>
+  ) : (
+    <Sms hideLoginOTP={hideLoginOTP} />
   );
 };
 

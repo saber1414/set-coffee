@@ -1,7 +1,11 @@
 import React from "react";
 import styles from "./sms.module.css";
 
-const Sms = () => {
+type Props = {
+  hideLoginOTP: () => void
+}
+
+const Sms = ({ hideLoginOTP }: Props) => {
   return (
     <>
       <div className={styles.form}>
@@ -16,7 +20,7 @@ const Sms = () => {
         </button>
         <p className={styles.send_again_code}>ارسال مجدد کد یکبار مصرف</p>
       </div>
-      <p className={styles.redirect_to_home}>لغو</p>
+      <p onClick={hideLoginOTP} className={styles.redirect_to_home}>لغو</p>
     </>
   );
 };
