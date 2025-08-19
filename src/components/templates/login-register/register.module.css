@@ -69,3 +69,8 @@
   font-size: 13px;
   color: rgb(52, 24, 14);
 }
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}

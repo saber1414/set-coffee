@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AOSInit from "@/utils/aos";
 import ScrollToTop from "@/utils/scrollToTop";
+import ToastProvider from "@/components/modules/toast/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="fa">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AOSInit />
+        <ToastProvider />
         {children}
         <ScrollToTop />
       </body>
