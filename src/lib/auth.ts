@@ -75,3 +75,19 @@ export const verifyToken = (token: string): JWTPayload | null => {
     return null;
   }
 };
+
+// refresh token
+export const generateRefreshToken = (data: JWTPayload): string => {
+  const secret = process.env.REFRESH_JWT_SECRET;
+  if (!secret) throw new Error("REFRESH_JWT_SECRET در محیط تعریف نشده است");
+  if (!data.phone && !data.email)
+    throw new Error("حداقل یکی از ایمیل یا شماره تلفن باید وجود داشته باشد");
+
+  try {
+    const token = sign({ ...data }, secret, { expiresIn: "10d" });
+    return token;
+  } catch (err) {
+    console.error("خطا در ساخت توکن", err);
+    throw new Error("خطا در ساخت توکن");
+  }
+};
