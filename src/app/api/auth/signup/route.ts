@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     await userSchema.validate(body, { abortEarly: false });
+    
     const existingUser = await User.findOne({
       $or: [{ phone: body.phone }, { email: body.email }],
     });
@@ -44,7 +45,7 @@ export async function POST(req: NextRequest) {
       {
         status: 201,
         headers: {
-          "Set-Cookie": `token=${token}; path=/; httpOnly: true; Max-Age=${
+          "Set-Cookie": `token=${token}; path=/; httpOnly=true; Max-Age=${
             60 * 60 * 24 * 7
           };SameSite=Strict;Secure;`,
         },

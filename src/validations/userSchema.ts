@@ -14,5 +14,13 @@ export const userSchema = yup.object().shape({
 
   password: yup.string().min(6, "رمز عبور حداقل باید 6 رقم باشد"),
   role: yup.string().oneOf(["USER", "ADMIN"], "نقش باید USER یا ADMIN باشد"),
-  refreshToken: yup.string().optional()
+  refreshToken: yup.string().optional(),
+});
+
+export const signinSchema = yup.object().shape({
+  identifier: yup.string().required("نام یا ایمیل الزامی است"),
+  password: yup
+    .string()
+    .required("رمز عبور الزامی است")
+    .min(6, "رمز عبور حداقل باید 6 کاراکتر باشد"),
 });
