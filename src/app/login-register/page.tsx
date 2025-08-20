@@ -7,10 +7,6 @@ import Image from "next/image";
 import Login from "@/components/templates/login-register/login";
 import Register from "@/components/templates/login-register/register";
 
-export const metadata: Met = {
-
-}
-
 
 const Login_register = () => {
   const [authType, setAuthType] = useState(authTypes.LOGIN);

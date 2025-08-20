@@ -4,6 +4,7 @@ import Navbar from "@/components/modules/navbar/Navbar";
 import { authenticate } from "@/middleware/auth";
 import Footer from "@/components/modules/footer/Footer";
 import { Metadata } from "next";
+import Breadcrumb from "@/components/modules/breadcrumb/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "درباره ما | set-coffee"
@@ -18,7 +19,7 @@ const Page = async () => {
         <title>درباره ما | set-coffee</title>
       </head>
       <Navbar isLogin={!!user} />
-      {/* <Breadcrumb route={"درباره ما"} /> */}
+      <Breadcrumb route={"درباره ما"} />
       <div className={styles.container}>
         <section>
           <div>
