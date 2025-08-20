@@ -1,6 +1,6 @@
 import connectDB from "@/lib/db";
 import User from "@/models/User";
-import { generateToken, verifyPassword } from "@/lib/auth";
+import { generateRefreshToken, generateToken, verifyPassword } from "@/lib/auth";
 import { handleYupError } from "@/lib/handleYupError";
 import { NextRequest, NextResponse } from "next/server";
 import { signinSchema } from "@/validations/userSchema";
@@ -34,6 +34,15 @@ export async function POST(req: NextRequest) {
       phone: user.phone,
       email: user.email,
     });
+
+    const refreshToken = generateRefreshToken({
+      phone: user.phone,
+      email: user.email
+    });
+
+    await User.findOneAndUpdate({ email: user.email }, {
+      $set: { refreshToken }
+    })
 
     return NextResponse.json(
       { message: "ورود موفق بود" },

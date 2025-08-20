@@ -8,7 +8,11 @@ import { FiShoppingCart } from "react-icons/fi";
 import { BsSuitHeart } from "react-icons/bs";
 import Image from "next/image";
 
-const Navbar = () => {
+type NavbarProps = {
+  isLogin: boolean;
+};
+
+const Navbar = ({ isLogin }: NavbarProps) => {
   const [fixTop, setFixTop] = useState<boolean>(false);
 
   useEffect(() => {
@@ -56,23 +60,26 @@ const Navbar = () => {
             <li>
               <Link href="/roles">قوانین</Link>
             </li>
-            {/* <li>
-              <Link href="/login-register">ورود / ثبت نام</Link>
-            </li> */}
-            <div className={styles.dropdown}>
-              <Link href="/p-user">
-                {" "}
-                <IoIosArrowDown className={styles.dropdown_icons} />
-                حساب کاربری
-              </Link>
-              <div className={styles.dropdown_content}>
-                <Link href="/p-user/orders">سفارشات</Link>
-                <Link href="/p-user/tickets">تیکت های پشتیبانی</Link>
-                <Link href="/p-user/comments">دیدگاه ها</Link>
-                <Link href="/p-user/favorites">علاقه مندی ها</Link>
-                <Link href="/p-user/account-details">جزئیات حساب</Link>
+            {isLogin ? (
+              <div className={styles.dropdown}>
+                <Link href="/p-user">
+                  {" "}
+                  <IoIosArrowDown className={styles.dropdown_icons} />
+                  حساب کاربری
+                </Link>
+                <div className={styles.dropdown_content}>
+                  <Link href="/p-user/orders">سفارشات</Link>
+                  <Link href="/p-user/tickets">تیکت های پشتیبانی</Link>
+                  <Link href="/p-user/comments">دیدگاه ها</Link>
+                  <Link href="/p-user/favorites">علاقه مندی ها</Link>
+                  <Link href="/p-user/account-details">جزئیات حساب</Link>
+                </div>
               </div>
-            </div>
+            ) : (
+              <li>
+                <Link href="/login-register">ورود / ثبت نام</Link>
+              </li>
+            )}
           </ul>
           <div className={styles.navbar_icons}>
             <Link href="/cart">
