@@ -7,6 +7,11 @@ import Image from "next/image";
 import Login from "@/components/templates/login-register/login";
 import Register from "@/components/templates/login-register/register";
 
+export const metadata: Met = {
+
+}
+
+
 const Login_register = () => {
   const [authType, setAuthType] = useState(authTypes.LOGIN);
 
@@ -15,6 +20,7 @@ const Login_register = () => {
 
   return (
     <>
+
       <div className={styles.login_register}>
         <div className={styles.form_bg} data-aos="fade-up">
           {authType === authTypes.LOGIN ? (

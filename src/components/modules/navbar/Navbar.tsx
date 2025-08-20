@@ -52,7 +52,7 @@ const Navbar = ({ isLogin }: NavbarProps) => {
               <Link href="/blog">وبلاگ</Link>
             </li>
             <li>
-              <Link href="/about-me">درباره ما</Link>
+              <Link href="/about-us">درباره ما</Link>
             </li>
             <li>
               <Link href="/contact-us">تماس با ما</Link>
