@@ -1,17 +1,26 @@
 import { verifyToken } from "@/lib/auth";
 import User, { IUser } from "@/models/User";
 import { cookies } from "next/headers";
+import connectDB from "@/lib/db";
 
-export const authenticate = async () => {
+export const authenticate = async (): Promise<IUser | null> => {
+  await connectDB();
+
   const token = (await cookies()).get("token")?.value;
-  let user: IUser | null = null;
+  if (!token) return null;
 
-  if (token) {
+  try {
     const tokenPayload = verifyToken(token);
-    if (tokenPayload) {
-      user = await User.findOne({ email: tokenPayload.email });
+    if (tokenPayload?.email) {
+      const user = await User.findOne({ email: tokenPayload.email });
+
+      if (user && user.role === "ADMIN") {
+        return user;
+      }
     }
+  } catch (err) {
+    console.error("❌ Authentication error:", err);
   }
 
-  return user;
+  return null;
 };
