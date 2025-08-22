@@ -4,6 +4,7 @@ import { handleYupError } from "@/lib/handleYupError";
 import { authenticate } from "@/middleware/auth";
 import { productSchema } from "@/validations/productSchema";
 import { NextRequest, NextResponse } from "next/server";
+import Comment from "@/models/Comments";
 import path from "path";
 import fs from "fs";
 
@@ -69,35 +70,35 @@ export async function PUT(
 }
 
 export async function DELETE(
-  context: { params: { id: string } }
+  req: Request,
+  { params }: { params: { id: string } }
 ) {
   try {
     await connectDB();
 
     const user = await authenticate();
-
     if (!user || user.role !== "ADMIN") {
       return NextResponse.json({ message: "دسترسی غیر مجاز" }, { status: 403 });
     }
 
-    const { id } = context.params;
+    const { id } = params;
 
-    const deleteProduct = await Product.findByIdAndDelete(id);
-
-    if (!deleteProduct) {
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (!deletedProduct) {
       return NextResponse.json(
         { message: "محصولی با این شناسه یافت نشد" },
         { status: 404 }
       );
     }
 
+    await Comment.deleteMany({ product: id });
+
     return NextResponse.json(
-      { message: "محصول با موفقیت حذف شد" },
+      { message: "محصول و دیدگاه‌های مرتبط با موفقیت حذف شدند" },
       { status: 200 }
     );
   } catch (err) {
-    const { body, status } = handleYupError(err);
-    console.log("Error =>", err);
-    return NextResponse.json(body, { status });
+    console.error("🔥 خطا در حذف محصول:", err);
+    return NextResponse.json({ error: "خطای ناشناخته" }, { status: 500 });
   }
 }

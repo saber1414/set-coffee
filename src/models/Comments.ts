@@ -7,6 +7,10 @@ export interface IComment extends Document {
   score: number;
   date: Date;
   product: Types.ObjectId;
+  isReplied: boolean;
+  replyBody: string;
+  replyAuthor: string;
+  isRejected: boolean;
 }
 
 const schema: Schema<IComment> = new Schema({
@@ -34,10 +38,27 @@ const schema: Schema<IComment> = new Schema({
   product: {
     type: Schema.Types.ObjectId,
     ref: "Product",
-    required: true
+    required: true,
+  },
+  isReplied: {
+    type: Boolean,
+    default: false,
+  },
+  replyBody: {
+    type: String,
+    default: "",
+  },
+  replyAuthor: {
+    type: String,
+    default: "",
+  },
+  isRejected: {
+    type: Boolean,
+    default: false,
   },
 });
 
-const CommentModel = mongoose.models.Comments || mongoose.model<IComment>("Comments", schema);
+const CommentModel =
+  mongoose.models.Comments || mongoose.model<IComment>("Comments", schema);
 
 export default CommentModel;

@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
     if (!user || user.role !== "ADMIN") {
       return NextResponse.json(
-        { message: "فقط مدیر مجاز است همه دیدگاه ها را مشاهد کند" },
+        { message: "فقط مدیر مجاز است همه دیدگاه ها را مشاهده کند" },
         { status: 403 }
       );
     }
@@ -31,10 +31,26 @@ export async function GET(req: NextRequest) {
 
     const totalComments = await Comment.countDocuments();
 
+    const formattedComments = comments.map((comment) => ({
+      _id: comment._id,
+      name: comment.name,
+      email: comment.email,
+      body: comment.body,
+      score: comment.score,
+      product: comment.product,
+      date: comment.createdAt,
+      ...(comment.isReplied && {
+        reply: {
+          body: comment.replyBody,
+          author: comment.replyAuthor,
+        },
+      }),
+    }));
+
     return NextResponse.json(
       {
         message: "دیدگاه ها",
-        comments,
+        comments: formattedComments,
         pagination: {
           currentPage: page,
           totalPage: Math.ceil(totalComments / limit),
@@ -71,6 +87,7 @@ export async function POST(req: NextRequest) {
       body,
       score,
       product,
+      isReplated: false,
     });
 
     await Product.findOneAndUpdate(
