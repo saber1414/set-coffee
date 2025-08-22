@@ -1,0 +1,89 @@
+import connectDB from "@/lib/db";
+import Comment from "@/models/Comments";
+import Product from "@/models/Product";
+import { commentSchema } from "@/validations/commentSchema";
+import { NextRequest, NextResponse } from "next/server";
+import { handleYupError } from "@/lib/handleYupError";
+import { authenticate } from "@/middleware/auth";
+
+export async function GET(req: NextRequest) {
+  try {
+    await connectDB();
+
+    const user = await authenticate();
+
+    if (!user || user.role !== "ADMIN") {
+      return NextResponse.json(
+        { message: "فقط مدیر مجاز است همه دیدگاه ها را مشاهد کند" },
+        { status: 403 }
+      );
+    }
+
+    const { searchParams } = req.nextUrl;
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const skip = (page - 1) * limit;
+
+    const comments = await Comment.find({})
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalComments = await Comment.countDocuments();
+
+    return NextResponse.json(
+      {
+        message: "دیدگاه ها",
+        comments,
+        pagination: {
+          currentPage: page,
+          totalPage: Math.ceil(totalComments / limit),
+          totalComments,
+          hasNextPage: page * limit < totalComments,
+          hasPrevPage: page > 1,
+        },
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    const { body, status } = handleYupError(err);
+    return NextResponse.json(body, { status });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    await connectDB();
+
+    const reqBody = await req.json();
+    await commentSchema.validate(reqBody, { abortEarly: false });
+
+    const { name, body, email, score, product } = reqBody;
+
+    const productExists = await Product.exists({ _id: product });
+    if (!productExists) {
+      return NextResponse.json({ message: "محصول یافت نشد" }, { status: 404 });
+    }
+
+    const comment = await Comment.create({
+      name,
+      email,
+      body,
+      score,
+      product,
+    });
+
+    await Product.findOneAndUpdate(
+      { _id: product },
+      { $push: { comments: comment._id } }
+    );
+
+    return NextResponse.json(
+      { message: "دیدگاه با موفقیت ارسال شد", commentId: comment._id },
+      { status: 201 }
+    );
+  } catch (err) {
+    const { body, status } = handleYupError(err);
+    return NextResponse.json(body, { status });
+  }
+}

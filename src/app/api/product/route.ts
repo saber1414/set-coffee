@@ -3,8 +3,30 @@ import Product from "@/models/Product";
 import { handleYupError } from "@/lib/handleYupError";
 import { authenticate } from "@/middleware/auth";
 import { NextRequest, NextResponse } from "next/server";
+import { productSchema } from "@/validations/productSchema";
 import path from "path";
 import fs from "fs";
+
+export async function GET() {
+  try {
+    await connectDB();
+    const products = await Product.find({});
+
+    if (!products)
+      return NextResponse.json(
+        { message: "هیچ محصولی یافت نشد" },
+        { status: 404 }
+      );
+
+    return NextResponse.json(
+      { message: "همه محصولات", products },
+      { status: 200 }
+    );
+  } catch (err) {
+    const { body, status } = handleYupError(err);
+    return NextResponse.json(body, { status });
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -51,9 +73,11 @@ export async function POST(req: NextRequest) {
       stock: Number(formData.get("stock") || 0),
       category: formData.get("category"),
       tags: (formData.get("tags") as string)?.split(",") || [],
-      details: {}, 
+      details: {},
       images: imagePaths,
     };
+
+    await productSchema.validate(productData, { abortEarly: false });
 
     const product = await Product.create(productData);
 

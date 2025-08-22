@@ -9,7 +9,7 @@ export interface IComment extends Document {
   product: Types.ObjectId;
 }
 
-const commentSchema: Schema<IComment> = new Schema({
+const schema: Schema<IComment> = new Schema({
   name: {
     type: String,
     required: true,
@@ -38,7 +38,6 @@ const commentSchema: Schema<IComment> = new Schema({
   },
 });
 
-const CommentModel =
-  mongoose.models.Comments || model<IComment>("Comment", commentSchema);
+const CommentModel = mongoose.models.Comments || mongoose.model<IComment>("Comments", schema);
 
 export default CommentModel;
