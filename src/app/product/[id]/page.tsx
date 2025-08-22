@@ -7,9 +7,18 @@ import Details from "@/components/templates/product/details";
 import Footer from "@/components/modules/footer/Footer";
 import Tabs from "@/components/templates/product/tabs";
 import MoreProducts from "@/components/templates/product/moreProducts";
+import connectDB from "@/lib/db";
+import { Product, Comment } from "@/models";
 
-const Page = async () => {
+
+
+const Page = async ({ params }: { params: { id: string } }) => {
+  await connectDB();
   const user = await authenticate();
+
+  const productId = params.id;
+
+  const product = await Product.findById(productId).populate("comments");
 
   return (
     <>
@@ -17,10 +26,10 @@ const Page = async () => {
         <Navbar isLogin={!!user} />
         <div data-aos="fade-up" className={styles.contents}>
           <div className={styles.main}>
-            <Details />
+            <Details product={product} />
             <Gallery />
           </div>
-          <Tabs />
+          <Tabs comments={JSON.parse(JSON.stringify(product.comments))}  />
           <MoreProducts />
         </div>
         <Footer />

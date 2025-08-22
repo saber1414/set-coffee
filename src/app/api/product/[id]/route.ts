@@ -4,7 +4,7 @@ import { handleYupError } from "@/lib/handleYupError";
 import { authenticate } from "@/middleware/auth";
 import { productSchema } from "@/validations/productSchema";
 import { NextRequest, NextResponse } from "next/server";
-import Comment from "@/models/Comments";
+import Comment from "@/models/Comment";
 import path from "path";
 import fs from "fs";
 

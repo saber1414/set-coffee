@@ -1,6 +1,6 @@
 import connectDB from "@/lib/db";
 import { authenticate } from "@/middleware/auth";
-import Comment from "@/models/Comments";
+import Comment from "@/models/Comment";
 import Product from "@/models/Product";
 import { NextResponse, NextRequest } from "next/server";
 

@@ -60,7 +60,7 @@ const schema: Schema<IProduct> = new Schema(
     comments: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Comment",
+        ref: "Comment", 
       },
     ],
     images: {
@@ -83,6 +83,7 @@ const schema: Schema<IProduct> = new Schema(
   }
 );
 
-const ProductModel = mongoose.models.Product || model<IProduct>("Product", schema);
+const ProductModel =
+  mongoose.models.Product || model<IProduct>("Product", schema);
 
 export default ProductModel;

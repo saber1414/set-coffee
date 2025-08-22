@@ -1,10 +1,11 @@
 import connectDB from "@/lib/db";
-import Comment from "@/models/Comments";
-import Product from "@/models/Product";
+
 import { commentSchema } from "@/validations/commentSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { handleYupError } from "@/lib/handleYupError";
 import { authenticate } from "@/middleware/auth";
+import { Comment, Product } from "@/models";
+
 
 export async function GET(req: NextRequest) {
   try {
@@ -87,7 +88,7 @@ export async function POST(req: NextRequest) {
       body,
       score,
       product,
-      isReplated: false,
+      isReplied: false,
     });
 
     await Product.findOneAndUpdate(

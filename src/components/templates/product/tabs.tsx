@@ -5,9 +5,15 @@ import styles from "./tabs.module.css";
 import Description from "./description";
 import MoreInfos from "./moreInfos";
 import Comments from "./comments";
+import { ProductComments } from "@/types/product";
 
-const Tabs = () => {
+type TabsProps = {
+  comments: ProductComments[]
+}
+
+const Tabs = ({ comments }: TabsProps) => {
   const [tab, setTab] = useState("description");
+
   return (
     <>
       <div data-aos="fade-left" className={styles.tabs}>
@@ -48,7 +54,7 @@ const Tabs = () => {
           <li title="Shipping">
             <label htmlFor="comments" role="button">
               {" "}
-              نظرات (7){" "}
+              نظرات ({comments.length}){" "}
             </label>
           </li>
         </ul>
@@ -61,7 +67,7 @@ const Tabs = () => {
             <MoreInfos />
           </section>
           <section className={styles.tabs_content}>
-            <Comments />
+            <Comments comments={comments} />
           </section>
         </div>
       </div>

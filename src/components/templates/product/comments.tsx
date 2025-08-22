@@ -2,11 +2,17 @@ import React from "react";
 import styles from "./comments.module.css";
 import CommentForm from "./commentForm";
 import Comment from "@/components/modules/comment/Comment";
+import { ProductComments } from "@/types/product";
 
-const Comments = () => {
+type CommentsProps = {
+  comments: ProductComments[]
+}
+
+const Comments = ({ comments }: CommentsProps) => {
+
   return (
     <>
-      <p>نظرات (7) :</p>
+      <p>نظرات ({comments.length}) :</p>
       <hr />
 
       <main className={styles.comments}>
@@ -16,11 +22,11 @@ const Comments = () => {
             ده -10- عددی
           </p>
           <div>
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
+            {
+              comments.map((comment) => (
+                <Comment key={comment._id} {...comment} />
+              ))
+            }
           </div>
         </div>
         <div className={styles.form_bg}>
