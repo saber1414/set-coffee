@@ -5,13 +5,13 @@ import styles from "./tabs.module.css";
 import Description from "./description";
 import MoreInfos from "./moreInfos";
 import Comments from "./comments";
-import { ProductComments } from "@/types/product";
+import { ProductDetails } from "@/types/product";
 
 type TabsProps = {
-  comments: ProductComments[]
+  product: ProductDetails
 }
 
-const Tabs = ({ comments }: TabsProps) => {
+const Tabs = ({ product }: TabsProps) => {
   const [tab, setTab] = useState("description");
 
   return (
@@ -54,20 +54,20 @@ const Tabs = ({ comments }: TabsProps) => {
           <li title="Shipping">
             <label htmlFor="comments" role="button">
               {" "}
-              نظرات ({comments.length}){" "}
+              نظرات ({product.comments.length}){" "}
             </label>
           </li>
         </ul>
 
         <div className={styles.contents}>
           <section className={styles.tabs_content}>
-            <Description />
+            <Description product={product} />
           </section>
           <section className={styles.tabs_content}>
             <MoreInfos />
           </section>
           <section className={styles.tabs_content}>
-            <Comments comments={comments} />
+            <Comments comments={JSON.parse(JSON.stringify(product.comments))}  />
           </section>
         </div>
       </div>

@@ -18,8 +18,7 @@ const Comments = ({ comments }: CommentsProps) => {
       <main className={styles.comments}>
         <div className={styles.user_comments}>
           <p className={styles.title}>
-            7 دیدگاه برای کپسول قهوه SETPRESSO سازگار با دستگاه نسپرسو ( GOLD )
-            ده -10- عددی
+            {comments.length} - دیدگاه
           </p>
           <div>
             {

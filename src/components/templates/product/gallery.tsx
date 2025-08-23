@@ -8,13 +8,14 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
+import { ProductImage } from "@/types/product";
 
-const Gallery = () => {
+type GalleryProps = {
+  images: ProductImage[]
+}
+
+const Gallery = ({images}: GalleryProps) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
-  const images = [
-    "https://set-coffee.com/wp-content/uploads/2020/12/Gold-DG-700x700.jpg",
-    "https://set-coffee.com/wp-content/uploads/2020/12/Gold-box-DG--150x150.jpg",
-  ];
 
   return (
     <section style={{ width: "36%" }}>

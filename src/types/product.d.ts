@@ -1,20 +1,3 @@
-export type ProductDetails = {
-  _id: string;
-  title: string;
-  slug: string;
-  shortDescription: string;
-  price: number;
-  rating: number;
-  description: string;
-  stock: number;
-  category: string;
-  tags: string[];
-  images: string[];
-  comments: string[];
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type ProductComments = {
   _id: string;
   name: string;
@@ -28,3 +11,24 @@ export type ProductComments = {
   isRejected: boolean;
   date: string;
 };
+
+export type ProductDetails = {
+  _id: string;
+  title: string;
+  slug: string;
+  shortDescription: string;
+  price: number;
+  rating: number;
+  description: string;
+  stock: number;
+  category: string;
+  tags: string[];
+  images: string[];
+  comments: ProductComments[]
+  createdAt: string;
+  updatedAt: string;
+};
+
+
+
+export type ProductImage = string;

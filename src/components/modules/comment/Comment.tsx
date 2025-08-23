@@ -22,11 +22,9 @@ const Comment = ({ name, body, date, score, product }: ProductComments) => {
   const formatJalaliDate = (isoDate: string): string => {
     const date = new Date(isoDate);
     const { jy, jm, jd } = jalaali.toJalaali(date);
-    const monthName = persianMonths[jm - 1]; 
+    const monthName = persianMonths[jm - 1];
     return `${jd}/${monthName}/${jy}`;
   };
-
-  console.log(product)
 
   return (
     <>
@@ -39,8 +37,8 @@ const Comment = ({ name, body, date, score, product }: ProductComments) => {
               <p>{formatJalaliDate(date)}</p>
             </div>
             <div className={styles.stars}>
-              {[...Array(score)].map((_, i) => (
-                <FaStar key={i} />
+              {[...Array(5)].map((_, i) => (
+                <FaStar key={i} color={i < score ? "#ffc107" : "#e4e5e9"} />
               ))}
             </div>
           </div>
