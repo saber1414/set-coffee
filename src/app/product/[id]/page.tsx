@@ -37,6 +37,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   const product = JSON.parse(JSON.stringify(rawProduct)); 
 
+  const relatedProducts = await Product.find({ category: product.category });
+
+  
+
   return (
     <div className={styles.container}>
       <Navbar isLogin={!!user} />
@@ -46,7 +50,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           <Gallery images={product.images} />
         </div>
         <Tabs product={product} />
-        <MoreProducts />
+        <MoreProducts relatedProducts={relatedProducts} currentProductId={product._id} />
       </div>
       <Footer />
     </div>
