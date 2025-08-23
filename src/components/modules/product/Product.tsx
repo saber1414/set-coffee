@@ -17,7 +17,7 @@ const Product = ({ product, averageRating }: ProductProps) => {
       <div className={styles.card}>
         <div className={styles.details_container}>
           <Image
-            src={product.images[0]}
+            src={product?.images?.[0] || "/placeholder.jpg"}
             alt="Product Image"
             width={430}
             height={430}
@@ -37,7 +37,7 @@ const Product = ({ product, averageRating }: ProductProps) => {
         </div>
 
         <div className={styles.details}>
-          <Link href={"/"}>{product.title}</Link>
+          <Link href={"/"}>{product?.title}</Link>
           <div>
             {[...Array(5)].map((_, index) =>
               index < averageRating ? (
@@ -47,7 +47,7 @@ const Product = ({ product, averageRating }: ProductProps) => {
               )
             )}
           </div>
-          <span>{product.price.toLocaleString()} تومان</span>
+          <span>{product?.price.toLocaleString()} تومان</span>
         </div>
       </div>
     </>
