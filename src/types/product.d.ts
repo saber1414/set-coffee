@@ -9,6 +9,7 @@ export type ProductComments = {
   replyBody: string;
   replyAuthor: string;
   isRejected: boolean;
+  isAccept: boolean;
   date: string;
 };
 

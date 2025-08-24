@@ -10,15 +10,17 @@ type CommentsProps = {
 
 const Comments = ({ comments }: CommentsProps) => {
 
+  const commentIsAccept = comments.filter((comment) => comment.isAccept)
+
   return (
     <>
-      <p>نظرات ({comments.length}) :</p>
+      <p>نظرات ({commentIsAccept.length}) :</p>
       <hr />
 
       <main className={styles.comments}>
         <div className={styles.user_comments}>
           <p className={styles.title}>
-            {comments.length} - دیدگاه
+            {commentIsAccept.length} - دیدگاه
           </p>
           <div>
             {

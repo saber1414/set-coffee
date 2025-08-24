@@ -105,3 +105,4 @@ export async function DELETE(
     return NextResponse.json({ error: "خطا در حذف دیدگاه" }, { status: 500 });
   }
 };
+

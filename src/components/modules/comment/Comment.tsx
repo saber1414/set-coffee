@@ -4,7 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { ProductComments } from "@/types/product";
 import jalaali from "jalaali-js";
 
-const Comment = ({ name, body, date, score, product }: ProductComments) => {
+const Comment = ({ name, body, date, score, isAccept }: ProductComments) => {
   const persianMonths = [
     "فروردین",
     "اردیبهشت",
@@ -28,23 +28,25 @@ const Comment = ({ name, body, date, score, product }: ProductComments) => {
 
   return (
     <>
-      <section className={styles.comment}>
-        <img src="/images/shahin.jpg" className={styles.avatar} alt="" />
-        <div>
-          <div className={styles.main_details}>
-            <div className={styles.user_info}>
-              <strong>{name}</strong>
-              <p>{formatJalaliDate(date)}</p>
+      {isAccept === true && (
+        <section className={styles.comment}>
+          <img src="/images/shahin.jpg" className={styles.avatar} alt="" />
+          <div>
+            <div className={styles.main_details}>
+              <div className={styles.user_info}>
+                <strong>{name}</strong>
+                <p>{formatJalaliDate(date)}</p>
+              </div>
+              <div className={styles.stars}>
+                {[...Array(5)].map((_, i) => (
+                  <FaStar key={i} color={i < score ? "#ffc107" : "#e4e5e9"} />
+                ))}
+              </div>
             </div>
-            <div className={styles.stars}>
-              {[...Array(5)].map((_, i) => (
-                <FaStar key={i} color={i < score ? "#ffc107" : "#e4e5e9"} />
-              ))}
-            </div>
+            <p>{body}</p>
           </div>
-          <p>{body}</p>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 };

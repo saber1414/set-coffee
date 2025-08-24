@@ -11,6 +11,7 @@ export interface IComment extends Document {
   replyBody: string;
   replyAuthor: string;
   isRejected: boolean;
+  isAccept: boolean;
 }
 
 const schema: Schema<IComment> = new Schema({
@@ -56,6 +57,10 @@ const schema: Schema<IComment> = new Schema({
     type: Boolean,
     default: false,
   },
+  isAccept: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const CommentModel =

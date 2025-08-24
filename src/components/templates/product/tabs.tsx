@@ -14,6 +14,8 @@ type TabsProps = {
 const Tabs = ({ product }: TabsProps) => {
   const [tab, setTab] = useState("description");
 
+  const commentIsAccept = product.comments.filter((comment) => comment.isAccept)
+
   return (
     <>
       <div data-aos="fade-left" className={styles.tabs}>
@@ -54,7 +56,7 @@ const Tabs = ({ product }: TabsProps) => {
           <li title="Shipping">
             <label htmlFor="comments" role="button">
               {" "}
-              نظرات ({product.comments.length}){" "}
+              نظرات ({commentIsAccept.length}){" "}
             </label>
           </li>
         </ul>

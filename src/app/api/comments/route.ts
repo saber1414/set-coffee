@@ -89,6 +89,7 @@ export async function POST(req: NextRequest) {
       score,
       product,
       isReplied: false,
+      isAccept: false,
     });
 
     await Product.findOneAndUpdate(

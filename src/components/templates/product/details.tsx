@@ -21,7 +21,7 @@ const Details = ({ product }: DetailsProps) => {
   };
 
   const averageRating = Math.round(getAverageRating(product.comments));
-
+  const commentIsAccept = product.comments.filter((comment) => comment.isAccept)
   
   return (
     <>
@@ -38,7 +38,7 @@ const Details = ({ product }: DetailsProps) => {
               />
             ))}
           </div>
-          <p>(دیدگاه {product.comments.length} کاربر)</p>
+          <p>(دیدگاه {commentIsAccept.length} کاربر)</p>
         </div>
 
         <p className={styles.price}>{product.price.toLocaleString()} تومان</p>
