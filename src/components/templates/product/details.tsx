@@ -2,12 +2,13 @@ import React from "react";
 import styles from "./details.module.css";
 import { FaFacebookF, FaStar, FaTwitter } from "react-icons/fa";
 import { IoCheckmark } from "react-icons/io5";
-import { CiHeart } from "react-icons/ci";
 import { TbSwitch3 } from "react-icons/tb";
 import { FaTelegram, FaLinkedinIn, FaPinterest } from "react-icons/fa";
 import Link from "next/link";
 import Breadcrumb from "../../../components/templates/product/Breadcrumb";
 import { ProductDetails } from "@/types/product";
+import AddWishlist from "./addWishlist";
+
 
 type DetailsProps = {
   product: ProductDetails;
@@ -21,7 +22,9 @@ const Details = ({ product }: DetailsProps) => {
   };
 
   const averageRating = Math.round(getAverageRating(product.comments));
-  const commentIsAccept = product.comments.filter((comment) => comment.isAccept)
+  const commentIsAccept = product.comments.filter((comment) => comment.isAccept);
+
+  
   
   return (
     <>
@@ -59,10 +62,7 @@ const Details = ({ product }: DetailsProps) => {
         </div>
 
         <section className={styles.wishlist}>
-          <div>
-            <CiHeart />
-            <Link href="/">افزودن به علاقه مندی ها</Link>
-          </div>
+          <AddWishlist  />
           <div>
             <TbSwitch3 />
             <Link href="/">مقایسه</Link>

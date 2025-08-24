@@ -14,7 +14,7 @@ export const authenticate = async (): Promise<IUser | null> => {
     if (tokenPayload?.email) {
       const user = await User.findOne({ email: tokenPayload.email });
 
-      if (user && user.role === "ADMIN") {
+      if (user) {
         return user;
       }
     }

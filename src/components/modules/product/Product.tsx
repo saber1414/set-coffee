@@ -41,13 +41,13 @@ const Product = ({ product, averageRating }: ProductProps) => {
           <div>
             {[...Array(5)].map((_, index) =>
               index < averageRating ? (
-                <FaRegStar key={index} />
-              ) : (
                 <FaStar key={index} />
+              ) : (
+                <FaRegStar key={index} />
               )
             )}
           </div>
-          <span>{product?.price.toLocaleString()} تومان</span>
+          <span>{product?.price?.toLocaleString()} تومان</span>
         </div>
       </div>
     </>

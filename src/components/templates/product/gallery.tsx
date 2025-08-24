@@ -9,12 +9,13 @@ import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { ProductImage } from "@/types/product";
+import Image from "next/image";
 
 type GalleryProps = {
-  images: ProductImage[]
-}
+  images: ProductImage[];
+};
 
-const Gallery = ({images}: GalleryProps) => {
+const Gallery = ({ images }: GalleryProps) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   return (
@@ -32,9 +33,9 @@ const Gallery = ({images}: GalleryProps) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2 gallery-slider"
       >
-        {images.map((img) => (
-          <SwiperSlide key={img}>
-            <img src={img} alt="تصویر محصول" />
+        {images.map((img, index) => (
+          <SwiperSlide key={index}>
+            <Image src={img} width={432} height={432} alt="تصویر محصول" />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -48,9 +49,14 @@ const Gallery = ({images}: GalleryProps) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="gallery-slider-2"
       >
-        {images.map((img) => (
-          <SwiperSlide key={img}>
-            <img src={img} alt="تصویر کوچک محصول" />
+        {images.map((img, index) => (
+          <SwiperSlide key={index}>
+            <Image
+              src={img}
+              width={100.5}
+              height={100.5}
+              alt="تصویر کوچک محصول"
+            />
           </SwiperSlide>
         ))}
       </Swiper>
