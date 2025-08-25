@@ -9,7 +9,7 @@ export const userSchema = yup.object().shape({
   email: yup.string().email("ایمیل معتبر نیست").optional(),
   phone: yup
     .string()
-    .matches(/^09\d{9}$/, "شماره تلفن معتبر نیست")
+   .matches(/^09\d{9}$/, "شماره تلفن معتبر نیست") 
     .required("شماره تلفن الزامی است"),
 
   password: yup.string().min(6, "رمز عبور حداقل باید 6 رقم باشد"),
