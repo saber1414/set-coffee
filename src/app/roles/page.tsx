@@ -4,12 +4,20 @@ import Navbar from "@/components/modules/navbar/Navbar";
 import { authenticate } from "@/middleware/auth";
 import React from "react";
 import styles from "@/styles/roles.module.css"
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "قوانین | set-coffee"
+} 
 
 const Page = async () => {
   const user = await authenticate();
 
   return (
     <>
+      <head>
+        <title>قوانین | set-coffee</title>
+      </head>
       <Navbar isLogin={!!user} />
       <Breadcrumb route={"قوانین"} />
       <div className={styles.container} data-aos="fade-up">

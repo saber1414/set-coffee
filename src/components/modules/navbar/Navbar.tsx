@@ -73,6 +73,7 @@ const Navbar = ({ isLogin }: NavbarProps) => {
                 حساب کاربری
               </Link>
               <div className={styles.dropdown_content}>
+                <Link href={"/p-user"}>پنل کاربری</Link>
                 <Link href="/p-user/orders">سفارشات</Link>
                 <Link href="/p-user/tickets">تیکت های پشتیبانی</Link>
                 <Link href="/p-user/comments">دیدگاه ها</Link>
