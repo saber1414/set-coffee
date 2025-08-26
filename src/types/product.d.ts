@@ -32,4 +32,5 @@ export type ProductDetails = {
 
 
 
+
 export type ProductImage = string;

@@ -4,8 +4,14 @@ import styles from "@/styles/p-user.module.css";
 import Orders from "@/components/templates/p-user/index/orders/orders";
 import Box from "@/components/templates/p-user/index/box/box";
 import Tickets from "@/components/templates/p-user/index/tickets/tickets";
+import { authenticate } from "@/middleware/auth";
+import { redirect } from "next/navigation";
 
-const Index = () => {
+const Index = async () => {
+  const user = await authenticate();
+
+  if (!user) redirect("/");
+
   return (
     <>
       <Layout>
