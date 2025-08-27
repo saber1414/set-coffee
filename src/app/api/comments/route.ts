@@ -39,6 +39,10 @@ export async function GET(req: NextRequest) {
       body: comment.body,
       score: comment.score,
       product: comment.product,
+      isAccept: comment.isAccept,
+      isRejected: comment.isRejected,
+      replyBody: comment.replyBody,
+      replyAuthor: comment.replyAuthor,
       date: comment.createdAt,
       ...(comment.isReplied && {
         reply: {

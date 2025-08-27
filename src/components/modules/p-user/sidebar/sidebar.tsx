@@ -2,15 +2,40 @@
 
 import React from "react";
 import styles from "./sidebar.module.css";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ImReply } from "react-icons/im";
 import { FaComments, FaHeart, FaShoppingBag, FaUsers } from "react-icons/fa";
 import { MdLogout, MdOutlineAttachMoney, MdSms } from "react-icons/md";
 import { TbListDetails } from "react-icons/tb";
+import Swal from "sweetalert2";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Sidebar = () => {
-  const path = usePathname()
+  const path = usePathname();
+
+  const route = useRouter();
+
+  const logoutHandler = () => {
+    Swal.fire({
+      icon: "info",
+      title: "خروج از حساب کاربری",
+      text: "آیا میخواهید خارخ شوید؟",
+      confirmButtonText: "بله",
+      cancelButtonText: "خیر",
+      showCancelButton: true,
+    }).then(async(res) => {
+      if ((res.isConfirmed)) {
+        const response = await axios.post("/api/auth/logout","",{ withCredentials: true });
+
+        if (response.status === 200) {
+          toast.success("خروج موفق");
+          route.push("/")
+        }
+      }
+    })
+  }
 
   return (
     <>
@@ -35,7 +60,7 @@ const Sidebar = () => {
               </Link>
               <Link href={"/p-user/comments"}>
                 <FaComments />
-                کامنت ها
+                دیدگاه ها
               </Link>
               <Link href={"/p-user/wishlist"}>
                 <FaHeart />
@@ -77,7 +102,7 @@ const Sidebar = () => {
             </>
           )}
         </ul>
-        <div className={styles.logout}>
+        <div onClick={logoutHandler} className={styles.logout}>
           <MdLogout />
           خروج
         </div>
