@@ -1,24 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./topBar.module.css";
 import { IoIosNotifications, IoIosSearch } from "react-icons/io";
 import Modal from "../modal/modal";
 import Image from "next/image";
+import axios from "axios";
+import { User } from "@/types/user";
 
 const TopBar = () => {
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [user, setUser] = useState({} as User);
 
   const hideModal = () => setShowModal(false);
+
+  useEffect(() => {
+    const userInfos = async () => {
+      const res = await axios.get<User>("/api/auth/me", {
+        withCredentials: true,
+      });
+      setUser(res.data);
+    };
+
+    userInfos();
+  }, []);
+
 
   return (
     <>
       <div className={styles.topbar}>
         <div className={styles.profile}>
           <div>
-            <p>شاهین مشکل گشا</p>
-            <span>ادمین</span>
+            <p>{user.name}</p>
+            <span>{user.role === "ADMIN" ? "مدیر" : "کاربر"}</span>
           </div>
           <Image width={50} height={50} src="/images/shahin.jpg" alt="" />
         </div>
