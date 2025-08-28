@@ -1,7 +1,7 @@
 import connectDB from "@/lib/db";
 import { authenticate } from "@/middleware/auth";
 import { User } from "@/models";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -31,3 +31,5 @@ export async function GET() {
     );
   }
 }
+
+
