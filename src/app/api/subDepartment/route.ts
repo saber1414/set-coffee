@@ -30,3 +30,19 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    await connectDB();
+
+    const subDepartment = await SubDepartment.find({});
+
+    return NextResponse.json({ subDepartment }, { status: 200 });
+  } catch (err) {
+    console.error("Error", err);
+    return NextResponse.json(
+      { message: "خطا زیر منوی دپارتمان" },
+      { status: 500 }
+    );
+  }
+}

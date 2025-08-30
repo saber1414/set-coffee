@@ -30,3 +30,16 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    await connectDB();
+
+    const department = await Department.find({});
+
+    return NextResponse.json({ department }, { status: 200 });
+  } catch (err) {
+    console.error("Error", err);
+    return NextResponse.json({ message: "خطا دپارتمان" }, { status: 500 });
+  }
+}

@@ -7,7 +7,11 @@ export interface ITickets extends Document {
   subDepartment: Types.ObjectId;
   priority: number;
   user: Types.ObjectId;
-  status: string
+  status: string;
+  adminAnswer?: string;
+  isAnswer?: boolean;
+  answeredBy: Types.ObjectId;
+  answeredAt: Date;
 }
 
 const schema: Schema<ITickets> = new Schema(
@@ -38,12 +42,27 @@ const schema: Schema<ITickets> = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
     },
     status: {
       type: String,
       enum: ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"],
       default: "OPEN",
+    },
+    adminAnswer: {
+      type: String,
+      default: "",
+    },
+    isAnswer: {
+      type: Boolean,
+      default: false,
+    },
+    answeredBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    answeredAt: {
+      type: Date,
     },
   },
   {

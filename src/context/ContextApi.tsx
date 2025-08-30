@@ -1,7 +1,7 @@
 "use client";
 
-
 import { ProductDetails } from "@/types/product";
+import { Tickets } from "@/types/tickets";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -9,6 +9,8 @@ export interface ContextApiProps {
   wishlist: ProductDetails[];
   loading: boolean;
   error: string | null;
+  tickets: Tickets[];
+  fetchTickets: () => Promise<void>;
 }
 
 const ContextApi = createContext<ContextApiProps | null>(null);
@@ -21,6 +23,7 @@ export const ContextProvider = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [wishlist, setWishlist] = useState<ProductDetails[]>([]);
+  const [tickets, setTickets] = useState<Tickets[]>([]);
 
   const fetchWishlist = async () => {
     try {
@@ -38,12 +41,31 @@ export const ContextProvider = ({
     }
   };
 
+  const fetchTickets = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get("/api/tickets/user", {
+        withCredentials: true,
+      });
+      setTickets(res.data.tickets);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Error wishlist fetching";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchWishlist();
+    fetchTickets();
   }, []);
 
   return (
-    <ContextApi.Provider value={{ wishlist, loading, error }}>
+    <ContextApi.Provider
+      value={{ wishlist, loading, error, tickets, fetchTickets }}
+    >
       {children}
     </ContextApi.Provider>
   );

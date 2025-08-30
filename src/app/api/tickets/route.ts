@@ -14,7 +14,15 @@ export async function POST(req: NextRequest) {
     }
 
     const reqBody = await req.json();
-    const { title, body, department, subDepartment, priority } = reqBody;
+    const {
+      title,
+      body,
+      department,
+      subDepartment,
+      priority,
+      adminAnswer,
+      isAnswer,
+    } = reqBody;
 
     if (!title || !body || !department || !subDepartment) {
       return NextResponse.json(
@@ -31,6 +39,8 @@ export async function POST(req: NextRequest) {
       priority: priority || 2,
       status: "OPEN",
       user: user._id,
+      adminAnswer: "",
+      isAnswer: false,
     });
 
     const fullTicket = await Ticket.findById(createdTicket._id).lean();
@@ -42,5 +52,31 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("Error sending ticket:", err);
     return NextResponse.json({ message: "خطا در ارسال تیکت" }, { status: 500 });
+  }
+}
+
+export async function GET() {
+  try {
+    await connectDB();
+
+    const user = await authenticate();
+
+    if (!user || user.role !== "ADMIN") {
+      return NextResponse.json({ message: "دسترسی غیر مجاز" }, { status: 403 });
+    }
+
+    const tickets = await Ticket.find({})
+      .sort({ createdAt: -1 })
+      .populate("department", "title")
+      .populate("subDepartment", "title")
+      .populate("answeredBy", "name role");
+
+    return NextResponse.json({ tickets }, { status: 200 });
+  } catch (err) {
+    console.log("Error", err);
+    return NextResponse.json(
+      { message: "خطا در دریافت همه تیکت ها" },
+      { status: 500 }
+    );
   }
 }
