@@ -8,6 +8,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { BsSuitHeart } from "react-icons/bs";
 import Image from "next/image";
 import axios from "axios";
+import { User } from "@/types/user";
 
 type NavbarProps = {
   isLogin: boolean;
@@ -16,8 +17,20 @@ type NavbarProps = {
 const Navbar = ({ isLogin }: NavbarProps) => {
   const [fixTop, setFixTop] = useState<boolean>(false);
   const [wishlistCount, setWishlistCount] = useState<number>(0);
+  const [user, setUser] = useState<User | null>(null);
+
+  const userInfo = async () => {
+    try {
+      const res = await axios.get("/api/auth/me", { withCredentials: true });
+      setUser(res.data);
+    } catch (err) {
+      console.log("Error", err);
+      throw new Error("خطا");
+    }
+  };
 
   useEffect(() => {
+    userInfo();
     const fixNavbarToTop = () => {
       setFixTop(window.scrollY > 130);
     };
@@ -42,7 +55,6 @@ const Navbar = ({ isLogin }: NavbarProps) => {
     if (isLogin) fetchWishlist();
   }, [isLogin]);
 
-
   return (
     <nav className={fixTop ? styles.navbar_fixed : styles.navbar}>
       <main>
@@ -59,30 +71,56 @@ const Navbar = ({ isLogin }: NavbarProps) => {
         </div>
 
         <ul className={styles.links}>
-          <li><Link href="/">صفحه اصلی</Link></li>
-          <li><Link href="/store">فروشگاه</Link></li>
-          <li><Link href="/blog">وبلاگ</Link></li>
-          <li><Link href="/about-us">درباره ما</Link></li>
-          <li><Link href="/contact-us">تماس با ما</Link></li>
-          <li><Link href="/roles">قوانین</Link></li>
+          <li>
+            <Link href="/">صفحه اصلی</Link>
+          </li>
+          <li>
+            <Link href="/store">فروشگاه</Link>
+          </li>
+          <li>
+            <Link href="/blog">وبلاگ</Link>
+          </li>
+          <li>
+            <Link href="/about-us">درباره ما</Link>
+          </li>
+          <li>
+            <Link href="/contact-us">تماس با ما</Link>
+          </li>
+          <li>
+            <Link href="/roles">قوانین</Link>
+          </li>
 
           {isLogin ? (
-            <div className={styles.dropdown}>
-              <Link href="/p-user">
-                <IoIosArrowDown className={styles.dropdown_icons} />
-                حساب کاربری
-              </Link>
-              <div className={styles.dropdown_content}>
-                <Link href={"/p-user"}>پنل کاربری</Link>
-                <Link href="/p-user/orders">سفارشات</Link>
-                <Link href="/p-user/tickets">تیکت های پشتیبانی</Link>
-                <Link href="/p-user/comments">دیدگاه ها</Link>
-                <Link href="/p-user/favorites">علاقه مندی ها</Link>
-                <Link href="/p-user/account-details">جزئیات حساب</Link>
+            user?.role === "USER" ? (
+              <div className={styles.dropdown}>
+                <Link href="/p-user">
+                  <IoIosArrowDown className={styles.dropdown_icons} />
+                  حساب کاربری
+                </Link>
+                <div className={styles.dropdown_content}>
+                  <Link href={"/p-user"}>پنل کاربری</Link>
+                  <Link href="/p-user/orders">سفارشات</Link>
+                  <Link href="/p-user/tickets">تیکت های پشتیبانی</Link>
+                  <Link href="/p-user/comments">دیدگاه ها</Link>
+                  <Link href="/p-user/favorites">علاقه مندی ها</Link>
+                  <Link href="/p-user/account-details">جزئیات حساب</Link>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className={styles.dropdown}>
+                <Link href="/p-user">
+                  <IoIosArrowDown className={styles.dropdown_icons} />
+                  حساب کاربری
+                </Link>
+                <div className={styles.dropdown_content}>
+                  <Link href={"/p-admin"}>پنل مدیریت</Link>
+                </div>
+              </div>
+            )
           ) : (
-            <li><Link href="/login-register">ورود / ثبت نام</Link></li>
+            <li>
+              <Link href="/login-register">ورود / ثبت نام</Link>
+            </li>
           )}
         </ul>
 

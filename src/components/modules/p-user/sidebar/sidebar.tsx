@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./sidebar.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -11,11 +11,12 @@ import { TbListDetails } from "react-icons/tb";
 import Swal from "sweetalert2";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { User } from "@/types/user";
 
 const Sidebar = () => {
   const path = usePathname();
-
   const route = useRouter();
+  const [user, setUser] = useState<User | null>(null);
 
   const logoutHandler = () => {
     Swal.fire({
@@ -35,13 +36,22 @@ const Sidebar = () => {
         }
       }
     })
-  }
+  };
+
+  useEffect(() => {
+    const userInfo = async() => {
+      const res = await axios.get("/api/auth/me", { withCredentials: true });
+      setUser(res.data)
+    };
+
+    userInfo()
+  }, [])
 
   return (
     <>
       <aside className={styles.sidebar}>
         <div className={styles.sidebar_header}>
-          <p>خوش اومدی شاهین عزیز</p>
+          <p>خوش اومدی {user?.name}</p>
         </div>
         <ul className={styles.sidebar_main}>
           {path.includes("/p-user") ? (
