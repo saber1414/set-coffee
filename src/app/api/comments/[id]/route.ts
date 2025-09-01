@@ -53,7 +53,7 @@ export async function PATCH(req: NextRequest) {
 
     const updatedComment = await Comment.findByIdAndUpdate(
       commentId,
-      { isRejected: true },
+      { isRejected: true, isAccept: false },
       { new: true }
     );
 

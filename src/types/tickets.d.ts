@@ -26,7 +26,10 @@ export interface Tickets {
     title: string;
   };
   priority: number;
-  user: string;
+  user: {
+    _id: string;
+    name: string;
+  };
   status: string;
   adminAnswer?: string;
   isAnswer: boolean;

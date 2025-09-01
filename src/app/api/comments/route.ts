@@ -6,7 +6,6 @@ import { handleYupError } from "@/lib/handleYupError";
 import { authenticate } from "@/middleware/auth";
 import { Comment, Product } from "@/models";
 
-
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
@@ -27,6 +26,7 @@ export async function GET(req: NextRequest) {
 
     const comments = await Comment.find({})
       .sort({ createdAt: -1 })
+      .populate("product", "title")
       .skip(skip)
       .limit(limit);
 

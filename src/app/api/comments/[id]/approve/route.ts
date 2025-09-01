@@ -18,7 +18,7 @@ export async function PATCH(
 
     const acceptedComment = await Comment.findByIdAndUpdate(
       params.id,
-      { isAccept: true },
+      { isAccept: true, isRejected: false },
       { new: true }
     );
 

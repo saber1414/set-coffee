@@ -67,6 +67,7 @@ export async function GET() {
 
     const tickets = await Ticket.find({})
       .sort({ createdAt: -1 })
+      .populate("user", "name")
       .populate("department", "title")
       .populate("subDepartment", "title")
       .populate("answeredBy", "name role");
