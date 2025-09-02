@@ -1,6 +1,7 @@
 "use client";
 
 import { Comments } from "@/types/comments";
+import { Discounts } from "@/types/discounts";
 import { ProductDetails } from "@/types/product";
 import { Tickets } from "@/types/tickets";
 import { User } from "@/types/user";
@@ -11,6 +12,7 @@ import {
   getFetchDeleteComment,
   getFetchRejectComment,
 } from "@/utils/comments";
+import { getFetchDiscounts } from "@/utils/discounts";
 import { getFetchTickets } from "@/utils/tickets";
 import { getFetchUserDelete } from "@/utils/users";
 import axios from "axios";
@@ -26,6 +28,7 @@ export interface ContextApiProps {
   users: User[];
   ticketsAdmin: Tickets[];
   comments: Comments[];
+  discounts: Discounts[];
   fetchTickets: () => Promise<void>;
   fetchUsers: () => Promise<void>;
   removeUser: (id: string) => Promise<void>;
@@ -36,6 +39,7 @@ export interface ContextApiProps {
   fetchAnswerComment: (id: string, author: string) => Promise<void>;
   fetchDeleteComment: (id: string) => Promise<void>;
   refreshComments: () => Promise<void>;
+  fetchDiscounts: () => Promise<void>;
 }
 
 const ContextApi = createContext<ContextApiProps | null>(null);
@@ -52,6 +56,7 @@ export const ContextProvider = ({
   const [users, setUsers] = useState<User[]>([]);
   const [ticketsAdmin, setTicketsAdmin] = useState<Tickets[]>([]);
   const [comments, setComments] = useState<Comments[]>([]);
+  const [discounts, setDiscounts] = useState<Discounts[]>([]);
 
   const fetchWishlist = async () => {
     try {
@@ -203,7 +208,21 @@ export const ContextProvider = ({
     if (res.isConfirmed) {
       await getFetchDeleteComment(id);
       setComments((prev) => prev.filter((comment) => comment._id !== id));
-      toast.success("دیدگاه حذف شد")
+      toast.success("دیدگاه حذف شد");
+    }
+  };
+
+  const fetchDiscounts = async () => {
+    try {
+      setLoading(true);
+      const data = await getFetchDiscounts();
+      setDiscounts(data);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "خطا در دریافت کدهای تخفیف";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -213,6 +232,7 @@ export const ContextProvider = ({
     fetchUsers();
     allTickets();
     allComments();
+    fetchDiscounts();
   }, []);
 
   return (
@@ -235,6 +255,8 @@ export const ContextProvider = ({
         fetchAnswerComment,
         fetchDeleteComment,
         refreshComments,
+        discounts,
+        fetchDiscounts,
       }}
     >
       {children}

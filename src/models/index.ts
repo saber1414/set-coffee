@@ -7,6 +7,7 @@ import ContactUsModel from "./ContactUs";
 import TicketModel from "./Ticket";
 import DepartmentModel from "./Department";
 import SubDepartmentModel from "./SubDepartment";
+import DiscountsModel from "./Discount";
 
 export const Comment = CommentModel;
 export const Product = ProductModel;
@@ -16,3 +17,4 @@ export const ContactUs = ContactUsModel;
 export const Ticket = TicketModel;
 export const Department = DepartmentModel;
 export const SubDepartment = SubDepartmentModel;
+export const Discount = DiscountsModel;

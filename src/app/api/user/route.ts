@@ -16,7 +16,7 @@ export async function PUT(req: NextRequest) {
 
     const body = await req.json();
 
-    const { name, email, phone, password, role } = body;
+    const { name, email, phone, password, role, } = body;
 
     const updatedUser = await User.findById(user._id);
 
