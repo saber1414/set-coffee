@@ -2,13 +2,45 @@
 import React from "react";
 import styles from "./table.module.css";
 import { useContextApi } from "@/context/ContextApi";
+import Swal from "sweetalert2";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type TableProps = {
   title: string;
 };
 
 const Table = ({ title }: TableProps) => {
-  const { discounts, loading, error } = useContextApi();
+  const { discounts, loading, error, setLoading, refreshDiscounts } =
+    useContextApi();
+
+  const removeDiscountHandel = async (id: string) => {
+    try {
+      setLoading(true);
+      const res = await Swal.fire({
+        icon: "warning",
+        title: "حذف کد تخفیف",
+        text: "آیا میخواهید کد تخفیف را حذف کنید؟",
+        showCancelButton: true,
+        cancelButtonText: "خیر",
+        confirmButtonText: "بله",
+      });
+
+      if (res.isConfirmed) {
+        const response = await axios.delete(`/api/discount/${id}`, {
+          withCredentials: true,
+        });
+
+        if (response.status === 200) {
+          toast.success("کد تخفیف حذف شد");
+          await refreshDiscounts();
+        }
+      }
+    } catch (err) {
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -47,7 +79,11 @@ const Table = ({ title }: TableProps) => {
                       <td>{discount.percent}</td>
                       <td>{discount.product.title}</td>
                       <td>
-                        <button type="button" className={styles.delete_btn}>
+                        <button
+                          type="button"
+                          onClick={() => removeDiscountHandel(discount._id)}
+                          className={styles.delete_btn}
+                        >
                           حذف
                         </button>
                       </td>

@@ -6,7 +6,7 @@ export interface IDiscount extends Document {
   uses: number;
   percent: number;
   product: Types.ObjectId;
-  usedBy: Types.ObjectId[];
+  usedBy: mongoose.Schema.Types.ObjectId[];
 }
 
 const schema: Schema<IDiscount> = new Schema(
@@ -23,7 +23,7 @@ const schema: Schema<IDiscount> = new Schema(
     },
     uses: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
     percent: {

@@ -12,7 +12,7 @@ export const discountSchema = yup.object({
     .min(1, "حداقل تعداد استفاده باید ۱ باشد"),
   uses: yup
     .number()
-    .required("تعداد استفاده شده الزامی است")
+    .optional()
     .default(0)
     .min(0, "تعداد استفاده‌شده نمی‌تواند منفی باشد"),
   percent: yup

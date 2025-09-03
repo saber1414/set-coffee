@@ -13,6 +13,7 @@ import {
   getFetchRejectComment,
 } from "@/utils/comments";
 import { getFetchDiscounts } from "@/utils/discounts";
+import { getFetchProducts } from "@/utils/products";
 import { getFetchTickets } from "@/utils/tickets";
 import { getFetchUserDelete } from "@/utils/users";
 import axios from "axios";
@@ -23,12 +24,14 @@ import Swal from "sweetalert2";
 export interface ContextApiProps {
   wishlist: ProductDetails[];
   loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   error: string | null;
   tickets: Tickets[];
   users: User[];
   ticketsAdmin: Tickets[];
   comments: Comments[];
   discounts: Discounts[];
+  products: ProductDetails[];
   fetchTickets: () => Promise<void>;
   fetchUsers: () => Promise<void>;
   removeUser: (id: string) => Promise<void>;
@@ -39,7 +42,9 @@ export interface ContextApiProps {
   fetchAnswerComment: (id: string, author: string) => Promise<void>;
   fetchDeleteComment: (id: string) => Promise<void>;
   refreshComments: () => Promise<void>;
+  refreshDiscounts: () => Promise<void>;
   fetchDiscounts: () => Promise<void>;
+  allProducts: () => Promise<void>;
 }
 
 const ContextApi = createContext<ContextApiProps | null>(null);
@@ -57,6 +62,7 @@ export const ContextProvider = ({
   const [ticketsAdmin, setTicketsAdmin] = useState<Tickets[]>([]);
   const [comments, setComments] = useState<Comments[]>([]);
   const [discounts, setDiscounts] = useState<Discounts[]>([]);
+  const [products, setProducts] = useState<ProductDetails[]>([]);
 
   const fetchWishlist = async () => {
     try {
@@ -226,6 +232,17 @@ export const ContextProvider = ({
     }
   };
 
+  const allProducts = async () => {
+    const data = await getFetchProducts();
+    setProducts(data);
+  };
+
+  const refreshDiscounts = async() => {
+    const discountData = await getFetchDiscounts();
+    setDiscounts(discountData)
+  };
+
+
   useEffect(() => {
     fetchWishlist();
     fetchTickets();
@@ -233,6 +250,7 @@ export const ContextProvider = ({
     allTickets();
     allComments();
     fetchDiscounts();
+    allProducts();
   }, []);
 
   return (
@@ -240,6 +258,7 @@ export const ContextProvider = ({
       value={{
         wishlist,
         loading,
+        setLoading,
         error,
         tickets,
         fetchTickets,
@@ -257,6 +276,9 @@ export const ContextProvider = ({
         refreshComments,
         discounts,
         fetchDiscounts,
+        products,
+        refreshDiscounts,
+        allProducts,
       }}
     >
       {children}

@@ -96,8 +96,8 @@ export async function GET() {
     }
 
     const discounts = await Discount.find({})
-        .sort({ createdAt: -1 })
-        .populate("product", "title")
+      .sort({ createdAt: -1 })
+      .populate("product", "title");
 
     return NextResponse.json({ discounts }, { status: 200 });
   } catch (err) {
