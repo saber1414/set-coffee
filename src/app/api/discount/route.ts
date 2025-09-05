@@ -44,7 +44,6 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     await connectDB();
-
     const user = await authenticate();
 
     if (!user) {
@@ -53,24 +52,39 @@ export async function PUT(req: NextRequest) {
 
     const { code } = await req.json();
 
+    if (!code || typeof code !== "string") {
+      return NextResponse.json(
+        { message: "کد تخفیف نامعتبر است" },
+        { status: 400 }
+      );
+    }
+
     const discount = await Discount.findOne({ code });
 
-    if (discount.uses >= discount.maxUse) {
+    if (!discount) {
       return NextResponse.json(
-        { message: "مهلت استفاده از این کد تمام شده است" },
+        { message: "کد تخفیف یافت نشد" },
         { status: 404 }
       );
     }
 
-    if (discount.useBy.includes(user._id)) {
+    if (discount.uses >= discount.maxUse) {
       return NextResponse.json(
-        { message: "شما قبلا از این کد استفاده کرده اید" },
+        { message: "مهلت استفاده از این کد تمام شده است" },
+        { status: 409 }
+      );
+    }
+
+    if (discount.usedBy.includes(user._id)) {
+      return NextResponse.json(
+        { message: "شما قبلا از این کد استفاده کرده‌اید" },
         { status: 409 }
       );
     }
 
     discount.uses += 1;
-    discount.useBy.push(user._id);
+    discount.maxUse -= 1;
+    discount.usedBy.push(user._id);
     await discount.save();
 
     return NextResponse.json(
@@ -78,7 +92,7 @@ export async function PUT(req: NextRequest) {
       { status: 200 }
     );
   } catch (err) {
-    console.error("Error", err);
+    console.error("خطا در اعمال کد تخفیف:", err);
     return NextResponse.json(
       { message: "خطا در اعمال کد تخفیف" },
       { status: 500 }
@@ -97,7 +111,8 @@ export async function GET() {
 
     const discounts = await Discount.find({})
       .sort({ createdAt: -1 })
-      .populate("product", "title");
+      .populate("product", "title")
+      .populate("usedBy", "name");
 
     return NextResponse.json({ discounts }, { status: 200 });
   } catch (err) {

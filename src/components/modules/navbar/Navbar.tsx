@@ -9,6 +9,7 @@ import { BsSuitHeart } from "react-icons/bs";
 import Image from "next/image";
 import axios from "axios";
 import { User } from "@/types/user";
+import { Cart } from "@/types/cart";
 
 type NavbarProps = {
   isLogin: boolean;
@@ -18,6 +19,7 @@ const Navbar = ({ isLogin }: NavbarProps) => {
   const [fixTop, setFixTop] = useState<boolean>(false);
   const [wishlistCount, setWishlistCount] = useState<number>(0);
   const [user, setUser] = useState<User | null>(null);
+  const [cart, setCart] = useState<Cart[]>([]);
 
   const userInfo = async () => {
     try {
@@ -34,6 +36,8 @@ const Navbar = ({ isLogin }: NavbarProps) => {
     const fixNavbarToTop = () => {
       setFixTop(window.scrollY > 130);
     };
+    const localCart: Cart[] = JSON.parse(localStorage.getItem("cart") || "[]");
+    setCart(localCart);
 
     window.addEventListener("scroll", fixNavbarToTop);
     return () => window.removeEventListener("scroll", fixNavbarToTop);
@@ -54,6 +58,22 @@ const Navbar = ({ isLogin }: NavbarProps) => {
 
     if (isLogin) fetchWishlist();
   }, [isLogin]);
+
+  useEffect(() => {
+    const updateCartFromStorage = () => {
+      const localCart: Cart[] = JSON.parse(
+        localStorage.getItem("cart") || "[]"
+      );
+      setCart(localCart);
+    };
+
+    updateCartFromStorage(); 
+
+    const handleCartChange = () => updateCartFromStorage();
+
+    window.addEventListener("cartUpdated", handleCartChange);
+    return () => window.removeEventListener("cartUpdated", handleCartChange);
+  }, []);
 
   return (
     <nav className={fixTop ? styles.navbar_fixed : styles.navbar}>
@@ -127,7 +147,7 @@ const Navbar = ({ isLogin }: NavbarProps) => {
         <div className={styles.navbar_icons}>
           <Link href="/cart">
             <FiShoppingCart />
-            <span>0</span>
+            <span>{cart.length}</span>
           </Link>
           <Link href="/wishlist">
             <BsSuitHeart />

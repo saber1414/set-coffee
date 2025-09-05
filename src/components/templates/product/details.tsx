@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import styles from "./details.module.css";
 import { FaFacebookF, FaStar, FaTwitter } from "react-icons/fa";
 import { IoCheckmark } from "react-icons/io5";
@@ -8,7 +9,7 @@ import Link from "next/link";
 import Breadcrumb from "../../../components/templates/product/Breadcrumb";
 import { ProductDetails } from "@/types/product";
 import AddWishlist from "./addWishlist";
-
+import toast from "react-hot-toast";
 
 type DetailsProps = {
   product: ProductDetails;
@@ -22,10 +23,40 @@ const Details = ({ product }: DetailsProps) => {
   };
 
   const averageRating = Math.round(getAverageRating(product.comments));
-  const commentIsAccept = product.comments.filter((comment) => comment.isAccept);
+  const commentIsAccept = product.comments.filter(
+    (comment) => comment.isAccept
+  );
 
-  
-  
+  // user basket
+  const [count, setCount] = useState<number>(1);
+
+  const addToCartHandel = () => {
+    const cart: {
+      id: string;
+      title: string;
+      price: number;
+      count: number;
+      image: string
+    }[] = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    const existingItem = cart.find((item) => item.id === product._id);
+
+    if (existingItem) {
+      existingItem.count += count;
+      toast.success("محصول به سبدخرید اضافه شد");
+    } else {
+      cart.push({
+        id: product._id,
+        title: product.title,
+        price: product.price,
+        image: product.images[0],
+        count,
+      });
+      toast.success("محصول به سبد خرید اضافه شد");
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+  };
+
   return (
     <>
       <main style={{ width: "63%" }}>
@@ -55,14 +86,20 @@ const Details = ({ product }: DetailsProps) => {
         </div>
 
         <div className={styles.cart}>
-          <button>افزودن به سبد خرید</button>
+          <button type="button" onClick={addToCartHandel}>
+            افزودن به سبد خرید
+          </button>
           <div>
-            <span>-</span>1<span>+</span>
+            <span onClick={() => setCount((prev) => Math.max(prev - 1, 1))}>
+              -
+            </span>
+            {count}
+            <span onClick={() => setCount(count + 1)}>+</span>
           </div>
         </div>
 
         <section className={styles.wishlist}>
-          <AddWishlist  />
+          <AddWishlist />
           <div>
             <TbSwitch3 />
             <Link href="/">مقایسه</Link>

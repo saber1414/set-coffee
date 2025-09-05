@@ -37,6 +37,8 @@ const Table = ({ title }: TableProps) => {
         }
       }
     } catch (err) {
+      console.log("خطا در حذف تخفیف", err);
+      toast.error("خطا در حذف کد نخفیف")
     } finally {
       setLoading(false);
     }
