@@ -90,3 +90,33 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(body, { status });
   }
 }
+
+// test image uploader
+// export async function PUT(req: NextRequest) {
+//   try {
+//     await connectDB();
+
+//     const formData = await req.formData();
+//     const files = formData.getAll("images") as File[];
+
+//     const imagePaths: string[] = [];
+
+//     for (const file of files) {
+//       if (file.size === 0) continue;
+//       const buffer = await file.arrayBuffer();
+//       const filename = Date.now() + "-" + file.name;
+//       const filePath = path.join(process.cwd(), "public", "uploads", filename);
+      
+//       fs.writeFileSync(filePath, Buffer.from(buffer));
+//       imagePaths.push(`/uploads/${filename}`)
+//     }
+
+//     return NextResponse.json(
+//       { message: "file uploaded successfully" },
+//       { status: 200 }
+//     );
+//   } catch (err) {
+//     console.log("Error", err);
+//     return NextResponse.json({ message: "error uploader" }, { status: 500 });
+//   }
+// }

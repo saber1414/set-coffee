@@ -24,7 +24,7 @@ const Product = ({ product, averageRating }: ProductProps) => {
             priority
           />
           <div className={styles.icons}>
-            <Link href="/">
+            <Link href={`/product/${product?._id}`}>
               <CiSearch />
               <p className={styles.tooltip}>مشاهده سریع</p>
             </Link>
@@ -37,7 +37,7 @@ const Product = ({ product, averageRating }: ProductProps) => {
         </div>
 
         <div className={styles.details}>
-          <Link href={"/"}>{product?.title}</Link>
+          <Link href={`/product/${product?._id}`}>{product?.title}</Link>
           <div>
             {[...Array(5)].map((_, index) =>
               index < averageRating ? (
